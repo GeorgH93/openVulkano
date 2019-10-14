@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{D546A70B-536A-487A-91E1-1CD4563A0104}</ProjectGuid>
+    <RootNamespace>openVulkanoCpp</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(SolutionDir)\external\spdlog\include;C:\Program Files\Assimp\include</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>vulkan-1.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;C:\Program Files\Assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+    <PostBuildEvent>
+      <Command>call "$(ProjectDir)Shader\CompileShaders.bat"
+xcopy /y "$(ProjectDir)Shader\*.spv" "$(OutDir)\Shader\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(SolutionDir)\external\spdlog\include;C:\Program Files\Assimp\include</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>vulkan-1.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;C:\Program Files\Assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+    <PostBuildEvent>
+      <Command>call "$(ProjectDir)Shader\CompileShaders.bat"
+xcopy /y "$(ProjectDir)Shader\*.spv" "$(OutDir)\Shader\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Shader\basic.frag" />
+    <None Include="Shader\basic.frag.spv" />
+    <None Include="Shader\basic.vert" />
+    <None Include="Shader\basic.vert.spv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Base\Logger.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene\Drawable.cpp" />
+    <ClCompile Include="Scene\Node.cpp" />
+    <ClCompile Include="Vulkan\FrameBuffer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base\EngineConstants.hpp" />
+    <ClInclude Include="Base\ICloseable.hpp" />
+    <ClInclude Include="Base\IGraphicsApp.hpp" />
+    <ClInclude Include="Base\IGraphicsAppManager.hpp" />
+    <ClInclude Include="Base\IInitable.hpp" />
+    <ClInclude Include="Base\Logger.hpp" />
+    <ClInclude Include="Base\PlatformEnums.hpp" />
+    <ClInclude Include="Base\ITickable.hpp" />
+    <ClInclude Include="Base\Timer.hpp" />
+    <ClInclude Include="Base\UI\BaseWindow.hpp" />
+    <ClInclude Include="Base\UI\IWindow.hpp" />
+    <ClInclude Include="Base\Render\IRenderer.hpp" />
+    <ClInclude Include="Base\Utils.hpp" />
+    <ClInclude Include="Data\ReadOnlyAtomicArrayQueue.hpp" />
+    <ClInclude Include="Base\EngineConfiguration.hpp" />
+    <ClInclude Include="Scene\AABB.hpp" />
+    <ClInclude Include="Scene\Drawable.hpp" />
+    <ClInclude Include="Scene\Material.hpp" />
+    <ClInclude Include="Scene\Geometry.hpp" />
+    <ClInclude Include="Scene\Scene.hpp" />
+    <ClInclude Include="Scene\Shader.hpp" />
+    <ClInclude Include="Scene\Vertex.hpp" />
+    <ClInclude Include="Host\GraphicsAppManager.hpp" />
+    <ClInclude Include="Host\PlatformProducer.hpp" />
+    <ClInclude Include="Host\WindowGLFW.hpp" />
+    <ClInclude Include="Vulkan\Buffer.hpp" />
+    <ClInclude Include="Vulkan\CommandHelper.hpp" />
+    <ClInclude Include="Vulkan\Context.hpp" />
+    <ClInclude Include="Vulkan\Debuging\ValidationLayer.hpp" />
+    <ClInclude Include="Vulkan\Device.hpp" />
+    <ClInclude Include="Vulkan\DeviceManager.hpp" />
+    <ClInclude Include="Vulkan\FrameBuffer.hpp" />
+    <ClInclude Include="Vulkan\Image.hpp" />
+    <ClInclude Include="Scene\Camera.hpp" />
+    <ClInclude Include="Scene\Node.hpp" />
+    <ClInclude Include="Vulkan\Pipeline.hpp" />
+    <ClInclude Include="Vulkan\Renderer.hpp" />
+    <ClInclude Include="Vulkan\RenderPass.hpp" />
+    <ClInclude Include="Vulkan\Resources\ManagedResource.hpp" />
+    <ClInclude Include="Vulkan\Resources\ResourceManager.hpp" />
+    <ClInclude Include="Vulkan\Resources\IShaderOwner.hpp" />
+    <ClInclude Include="Vulkan\Resources\UniformBuffer.hpp" />
+    <ClInclude Include="Vulkan\Scene\IRecordable.hpp" />
+    <ClInclude Include="Vulkan\Scene\VulkanGeometry.hpp" />
+    <ClInclude Include="Vulkan\Scene\VulkanNode.hpp" />
+    <ClInclude Include="Vulkan\Scene\VulkanShader.hpp" />
+    <ClInclude Include="Vulkan\SwapChain.hpp" />
+    <ClInclude Include="Vulkan\VulkanUtils.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\glm.0.9.9.500\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.500\build\native\glm.targets')" />
+    <Import Project="..\packages\glfw.3.3.0.1\build\native\glfw.targets" Condition="Exists('..\packages\glfw.3.3.0.1\build\native\glfw.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\glm.0.9.9.500\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.500\build\native\glm.targets'))" />
+    <Error Condition="!Exists('..\packages\glfw.3.3.0.1\build\native\glfw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glfw.3.3.0.1\build\native\glfw.targets'))" />
+  </Target>
+</Project>
