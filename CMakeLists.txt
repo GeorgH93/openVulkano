@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+find_package(ECM REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug")
@@ -37,20 +40,26 @@ target_link_libraries(openVulkanoCpp PRIVATE glfw)
 endif()
 
 # glm
-add_subdirectory(external/glm EXCLUDE_FROM_ALL)
-target_link_libraries(openVulkanoCpp PRIVATE glm)
+include_directories(external/glm)
 
 # fmt
 #add_subdirectory(external/fmt EXCLUDE_FROM_ALL)
 #target_link_libraries(openVulkanoCpp PRIVATE fmt)
 
 # spdlog
-add_subdirectory(external/spdlog EXCLUDE_FROM_ALL)
-target_link_libraries(openVulkanoCpp PRIVATE spdlog)
+include_directories(external/spdlog/include)
 #add_definitions(-SPDLOG_FMT_EXTERNAL)
 
 # assimp
-add_subdirectory(external/assimp EXCLUDE_FROM_ALL)
-target_link_libraries(openVulkanoCpp PRIVATE assimp)
+include_directories(external/assimp)
+IF(WIN32)
+    find_library(ASSIMP_LIBRARIES NAMES assimp libassimp.dll.a PATHS ${CMAKE_SOURCE_DIR}/libs/assimp)
+ELSE(WIN32)
+    find_package(ASSIMP REQUIRED)
+ENDIF(WIN32)
 
-target_sources(openVulkanoCpp PRIVATE openVulkanoCpp/Vulkan/FrameBuffer.cpp)
+target_sources(openVulkanoCpp PRIVATE openVulkanoCpp/Vulkan/FrameBuffer.cpp openVulkanoCpp/Base/Logger.cpp openVulkanoCpp/Scene/Drawable.cpp openVulkanoCpp/Scene/Node.cpp)
+
+# copy shaders
+file(GLOB SHADERS "openVulkanoCpp/Shader/*.spv")
+file(COPY ${SHADERS} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/Shader/)

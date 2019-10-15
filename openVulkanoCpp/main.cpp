@@ -28,7 +28,7 @@ public:
 		cam.Init(70, 16, 9, 0.1f, 100);
 		scene.SetCamera(&cam);
 		cam.SetMatrix(glm::translate(glm::mat4(1), glm::vec3(0,0,-10)));
-		shader.Init("Shader\\basic", "Shader\\basic");
+		shader.Init("Shader/basic", "Shader/basic");
 		drawablesPool.resize(GEOS);
 		for(int i = 0; i < GEOS; i++)
 		{
